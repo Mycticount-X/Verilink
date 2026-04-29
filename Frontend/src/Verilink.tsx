@@ -13,37 +13,6 @@ const Verilink: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (!url.trim()) return;
-
-//     setLoading(true);
-//     setError(null);
-//     setResult(null);
-
-//     try {
-//       const response = await fetch('http://localhost:8000/api/analyze', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ url: url }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Gagal terhubung ke server. Pastikan FastAPI berjalan.');
-//       }
-
-//       const data: PredictionResult = await response.json();
-//       setResult(data);
-//     } catch (err: any) {
-//       setError(err.message || 'Terjadi kesalahan tak terduga.');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-  // Just for Testing
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
@@ -52,37 +21,26 @@ const Verilink: React.FC = () => {
     setError(null);
     setResult(null);
 
-    setTimeout(() => {
-      try {
-        let mockPrediction: 'benign' | 'defacement' | 'phishing' | 'malware' = 'benign';
-        const lowerUrl = url.toLowerCase();
+    try {
+      const response = await fetch('http://localhost:8000/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: url }),
+      });
 
-        if (lowerUrl.includes('deface') || lowerUrl.includes('hack')) {
-          mockPrediction = 'defacement';
-        } else if (lowerUrl.includes('login') || lowerUrl.includes('phish')) {
-          mockPrediction = 'phishing';
-        } else if (lowerUrl.includes('virus') || lowerUrl.includes('malware')) {
-          mockPrediction = 'malware';
-        } else if (lowerUrl.includes('aman') || lowerUrl.includes('google')) {
-          mockPrediction = 'benign';
-        } else {
-          const categories: Array<'benign' | 'defacement' | 'phishing' | 'malware'> = ['benign', 'defacement', 'phishing', 'malware'];
-          mockPrediction = categories[Math.floor(Math.random() * categories.length)];
-        }
-
-        const mockData: PredictionResult = {
-          url: url,
-          prediction: mockPrediction,
-          confidence: 0.75 + (Math.random() * 0.24) 
-        };
-
-        setResult(mockData);
-      } catch (err: any) {
-        setError("Terjadi kesalahan saat melakukan simulasi.");
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Server FastAPI tidak merespon.');
       }
-    }, 1500); 
+
+      const data = await response.json();
+      setResult(data); 
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getResultBadge = (prediction: string) => {
