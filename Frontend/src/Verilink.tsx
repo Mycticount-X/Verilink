@@ -104,7 +104,7 @@ const Verilink: React.FC = () => {
       <div className="w-full max-w-2xl bg-gray-900 border border-purple-900/50 rounded-2xl shadow-[0_0_40px_-10px_rgba(147,51,234,0.3)] p-8">
         
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600 mb-2">
             Verilink
           </h1>
@@ -145,26 +145,38 @@ const Verilink: React.FC = () => {
             {error}
           </div>
         )}
-
-        {/* Result */}
-        {result && (
-          <div className="mt-8 p-6 bg-gray-950 border border-gray-800 rounded-xl animate-fade-in">
-            <h3 className="text-gray-400 text-sm mb-4 text-center">Analysis Result for: <br/><span className="text-gray-200 break-all">{result.url}</span></h3>
-            
-            <div className="flex justify-center">
-              <div className={`px-6 py-3 rounded-full border border-solid font-bold tracking-wide ${getResultBadge(result.prediction).style}`}>
-                {getResultBadge(result.prediction).text}
-              </div>
-            </div>
-            
-            {result.confidence && (
-              <p className="text-center text-gray-500 mt-4 text-xs">
-                Confidence Level: {(result.confidence * 100).toFixed(2)}%
-              </p>
-            )}
-          </div>
-        )}
       </div>
+      {result && (
+        <div className="w-full max-w-sm mt-6 bg-gray-1000 border border-purple-800/50 rounded-2xl shadow-[0_0_20px_-5px_rgba(147,51,234,0.2)] p-6 relative animate-fade-in transition-all">  
+          {/* X */}
+          <button 
+            onClick={() => setResult(null)}
+            className="absolute top-4 right-4 text-gray-500 hover:text-red-400 transition-colors p-1"
+            aria-label="Tutup"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <h3 className="text-gray-400 text-sm mb-6 text-center pr-4 pl-4">
+            Analysis Result for: <br/>
+            <span className="text-gray-200 break-all font-medium">{result.url}</span>
+          </h3>
+          
+          <div className="flex justify-center">
+            <div className={`px-8 py-3 rounded-full border border-solid font-bold tracking-wider shadow-lg ${getResultBadge(result.prediction).style}`}>
+              {getResultBadge(result.prediction).text}
+            </div>
+          </div>
+          
+          {result.confidence && (
+            <p className="text-center text-gray-500 mt-6 text-xs">
+              Confidence Level: {(result.confidence * 100).toFixed(2)}%
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
