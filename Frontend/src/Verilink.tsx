@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MatrixRain from './MatrixRain';
 
 interface PredictionResult {
   url: string;
@@ -100,8 +101,10 @@ const Verilink: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-2xl bg-gray-900 border border-purple-900/50 rounded-2xl shadow-[0_0_40px_-10px_rgba(147,51,234,0.3)] p-8">
+    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center justify-center p-4 font-sans relative">
+       <MatrixRain />
+      
+      <div className="w-full max-w-2xl bg-gray-900 border border-purple-900/50 rounded-2xl shadow-[0_0_40px_-10px_rgba(147,51,234,0.3)] p-8 relative z-10">
         
         {/* Header */}
         <div className="text-center mb-6">
@@ -109,7 +112,7 @@ const Verilink: React.FC = () => {
             Verilink
           </h1>
           <p className="text-gray-400 text-sm">
-            Deteksi Malicious URL Berbasis AI
+            Analyze URLs for Malicious Content
           </p>
         </div>
 
@@ -120,7 +123,7 @@ const Verilink: React.FC = () => {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Masukkan URL yang ingin dicek (misal: http://contoh.com)"
+              placeholder="Enter the URL to check (e.g., https://google.com)"
               className="w-full px-5 py-4 bg-gray-950 border border-gray-800 rounded-xl text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder-gray-600"
               required
             />
@@ -135,7 +138,7 @@ const Verilink: React.FC = () => {
                 : 'bg-purple-600 hover:bg-purple-500 hover:shadow-[0_0_20px_-5px_rgba(168,85,247,0.5)]'
             }`}
           >
-            {loading ? 'Menganalisis...' : 'Deteksi Tautan'}
+            {loading ? 'Analyzing...' : 'Analyze URL'}
           </button>
         </form>
 
@@ -147,7 +150,7 @@ const Verilink: React.FC = () => {
         )}
       </div>
       {result && (
-        <div className="w-full max-w-sm mt-6 bg-gray-1000 border border-purple-800/50 rounded-2xl shadow-[0_0_20px_-5px_rgba(147,51,234,0.2)] p-6 relative animate-fade-in transition-all">  
+        <div className="w-full max-w-sm mt-6 bg-gray-1000 border border-purple-800/50 rounded-2xl shadow-[0_0_20px_-5px_rgba(147,51,234,0.2)] p-6 relative animate-fade-in transition-all relative z-10">  
           {/* X */}
           <button 
             onClick={() => setResult(null)}
