@@ -92,7 +92,15 @@ def extract_features(url):
 async def analyze_url(request: URLRequest):
     try:
         processed_data = extract_features(request.url)
+        
+        # 1. Dapatkan array probabilitas untuk semua kelas
+        probabilities = model.predict_proba(processed_data)[0]
+        
+        # 2. Lakukan prediksi kelas
         prediction = model.predict(processed_data)[0]
+        
+        # 3. Ambil nilai probabilitas tertinggi sebagai confidence (dikonversi ke float agar bisa jadi JSON)
+        confidence_level = float(max(probabilities))
         
         labels = {0: 'benign', 1: 'defacement', 2: 'phishing', 3: 'malware'}
         result = labels.get(prediction, "unknown")
@@ -100,7 +108,7 @@ async def analyze_url(request: URLRequest):
         return {
             "url": request.url,
             "prediction": result,
-            "confidence": 0.98 
+            "confidence": confidence_level # <-- Update di sini
         }
     except Exception as e:
         print("=== TERJADI ERROR ===")
